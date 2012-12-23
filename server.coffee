@@ -73,7 +73,6 @@ setInterval (->
   control.ref ref
   control.pcmd pcmd
   control.flush()
-  console.log control
 ), 30
 
 #----------------
@@ -85,18 +84,7 @@ io.sockets.on "connection", (socket) ->
   socket.emit "news",
     hello: "world"
 
-  socket.on "takeoff", (data) ->
-    console.log 'takeoff'
-    drone.takeoff
-
-  socket.on "land", (data) ->
-    console.log 'land'
-    drone.land
-    
-  socket.on "stop", (data) ->
-    # console.log 'stop'
-    drone.stop
-
-  socket.on "sendCommand", (data) ->
-    console.log data
-    console.log drone.commands(data)
+  socket.on "takeoff", drone.takeoff
+  socket.on "land", drone.land
+  socket.on "stop", drone.stop
+  socket.on "command", drone.commands

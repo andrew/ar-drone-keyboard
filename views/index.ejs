@@ -88,7 +88,7 @@
           console.log('land')
           socket.emit('land');
         } else{
-          socket.emit('sendCommand', commands);
+          socket.emit('command', commands);
         }
       } else{
         socket.emit('stop');
