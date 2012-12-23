@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Controls</title>
+  <style type="text/css" media="screen">
+    #controls{
+      position:absolute;
+      top:0;
+      right:0;
+      padding:10px;
+    }
+  </style>
+</head>
+<body class="deck-container">
+
+<div id='log'>
+  
+</div>
+
+<div id='controls'>
+  
+</div>
+
+<script src="jquery-1.7.2.min.js"></script>
+<script src="keyboard.js"></script>
+
+<script src="http://localhost:8081/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:8081');
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: '2' });
+  });
+
+  var timer
+  var log
+  var mapping = {
+    'space': 'takeoff',
+    'x' : 'land',
+    'w' : 'front',
+    's' : 'back',
+    'a' : 'left',
+    'd' : 'right',
+    'j' : 'counterClockwise',
+    'l' : 'clockwise',
+    'i' : 'up',
+    'k' : 'down',
+  }
+
+  $(function(){
+    timer = setInterval(tick, 30)
+    log = $('#log')
+    
+    for (var k in mapping) {
+      if (mapping.hasOwnProperty(k)) {
+        $('#controls').append(k + ' => ' + mapping[k] + '<br/>');
+      }
+    }
+  })
+
+  var tick = function(){
+    keys = KeyboardJS.activeKeys()
+    log.text(keys)
+
+    if(keys.length > 0) {
+      // console.log(keys)
+
+      commands = []
+      for (var i = 0; i < keys.length; i++) {
+        key = keys[i]
+        command = mapping[key]
+        if(command != undefined){
+          commands.push(command)
+        }
+      }
+      
+
+      if(commands.length > 0){
+        log.text(commands)
+        
+        if(commands[0] === 'takeoff'){
+          console.log('takeoff')
+          socket.emit('takeoff');
+        } else if(commands[0] === 'land'){
+          console.log('land')
+          socket.emit('land');
+        } else{
+          socket.emit('sendCommand', commands);
+        }
+      } else{
+        socket.emit('stop');
+        log.text('')
+      }
+    } else{
+      log.text('')
+      socket.emit('stop');
+    }
+  }
+
+</script>
+</body>
+</html>
