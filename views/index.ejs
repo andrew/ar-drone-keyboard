@@ -48,6 +48,8 @@
     'l' : 'clockwise',
     'i' : 'up',
     'k' : 'down',
+    'dash': 'decreaseSpeed',
+    'equal': 'increaseSpeed',
   }
 
   $(function(){
@@ -66,7 +68,6 @@
     log.text(keys)
 
     if(keys.length > 0) {
-      // console.log(keys)
 
       commands = []
       for (var i = 0; i < keys.length; i++) {
@@ -76,17 +77,17 @@
           commands.push(command)
         }
       }
-      
 
       if(commands.length > 0){
         log.text(commands)
-        
         if(commands[0] === 'takeoff'){
-          console.log('takeoff')
           socket.emit('takeoff');
         } else if(commands[0] === 'land'){
-          console.log('land')
           socket.emit('land');
+        } else if(commands[0] === 'increaseSpeed'){
+          socket.emit('increaseSpeed');
+        } else if(commands[0] === 'decreaseSpeed'){
+          socket.emit('decreaseSpeed');
         } else{
           socket.emit('command', commands);
         }
