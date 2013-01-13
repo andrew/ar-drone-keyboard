@@ -38,4 +38,4 @@ decrease speed `-`
 
 ## Copyright
 
-Copyright (c) 2012 Andrew Nesbitt. See [LICENSE](https://github.com/andrew/ar-drone-keyboard/blob/master/LICENSE) for details.
+Copyright (c) 2013 Andrew Nesbitt. See [LICENSE](https://github.com/andrew/ar-drone-keyboard/blob/master/LICENSE) for details.
